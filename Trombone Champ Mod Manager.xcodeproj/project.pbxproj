@@ -11,6 +11,13 @@
 		362A6AA2298C4B8200D2B6D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362A6AA1298C4B8200D2B6D5 /* ContentView.swift */; };
 		362A6AA4298C4B8300D2B6D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 362A6AA3298C4B8300D2B6D5 /* Assets.xcassets */; };
 		362A6AA7298C4B8300D2B6D5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 362A6AA6298C4B8300D2B6D5 /* Preview Assets.xcassets */; };
+		362A6AAF298C5AB300D2B6D5 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362A6AAE298C5AB300D2B6D5 /* Types.swift */; };
+		362A6AB2298C625600D2B6D5 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 362A6AB1298C625600D2B6D5 /* ZIPFoundation */; };
+		36616AF2298DECEF00E92886 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 36616AF1298DECEF00E92886 /* CachedAsyncImage */; };
+		36616AF4298DEFD500E92886 /* ModListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36616AF3298DEFD500E92886 /* ModListRow.swift */; };
+		36616AF6298DF1EE00E92886 /* ModInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36616AF5298DF1EE00E92886 /* ModInfo.swift */; };
+		36793328298C8EED0027CAF1 /* BepInExInstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36793327298C8EED0027CAF1 /* BepInExInstallView.swift */; };
+		3679332A298C94F80027CAF1 /* ModList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36793329298C94F80027CAF1 /* ModList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +27,11 @@
 		362A6AA3298C4B8300D2B6D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		362A6AA6298C4B8300D2B6D5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		362A6AA8298C4B8300D2B6D5 /* Trombone_Champ_Mod_Manager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Trombone_Champ_Mod_Manager.entitlements; sourceTree = "<group>"; };
+		362A6AAE298C5AB300D2B6D5 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		36616AF3298DEFD500E92886 /* ModListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModListRow.swift; sourceTree = "<group>"; };
+		36616AF5298DF1EE00E92886 /* ModInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModInfo.swift; sourceTree = "<group>"; };
+		36793327298C8EED0027CAF1 /* BepInExInstallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BepInExInstallView.swift; sourceTree = "<group>"; };
+		36793329298C94F80027CAF1 /* ModList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				362A6AB2298C625600D2B6D5 /* ZIPFoundation in Frameworks */,
+				36616AF2298DECEF00E92886 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,11 +66,16 @@
 		362A6A9E298C4B8200D2B6D5 /* Trombone Champ Mod Manager */ = {
 			isa = PBXGroup;
 			children = (
+				362A6AAE298C5AB300D2B6D5 /* Types.swift */,
 				362A6A9F298C4B8200D2B6D5 /* Trombone_Champ_Mod_ManagerApp.swift */,
 				362A6AA1298C4B8200D2B6D5 /* ContentView.swift */,
+				36793327298C8EED0027CAF1 /* BepInExInstallView.swift */,
+				36793329298C94F80027CAF1 /* ModList.swift */,
+				36616AF3298DEFD500E92886 /* ModListRow.swift */,
 				362A6AA3298C4B8300D2B6D5 /* Assets.xcassets */,
 				362A6AA8298C4B8300D2B6D5 /* Trombone_Champ_Mod_Manager.entitlements */,
 				362A6AA5298C4B8300D2B6D5 /* Preview Content */,
+				36616AF5298DF1EE00E92886 /* ModInfo.swift */,
 			);
 			path = "Trombone Champ Mod Manager";
 			sourceTree = "<group>";
@@ -85,6 +104,10 @@
 			dependencies = (
 			);
 			name = "Trombone Champ Mod Manager";
+			packageProductDependencies = (
+				362A6AB1298C625600D2B6D5 /* ZIPFoundation */,
+				36616AF1298DECEF00E92886 /* CachedAsyncImage */,
+			);
 			productName = "Trombone Champ Mod Manager";
 			productReference = 362A6A9C298C4B8200D2B6D5 /* Trombone Champ Mod Manager.app */;
 			productType = "com.apple.product-type.application";
@@ -101,6 +124,7 @@
 				TargetAttributes = {
 					362A6A9B298C4B8200D2B6D5 = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -113,6 +137,10 @@
 				Base,
 			);
 			mainGroup = 362A6A93298C4B8200D2B6D5;
+			packageReferences = (
+				362A6AB0298C625600D2B6D5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				36616AF0298DECEF00E92886 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+			);
 			productRefGroup = 362A6A9D298C4B8200D2B6D5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -139,8 +167,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36793328298C8EED0027CAF1 /* BepInExInstallView.swift in Sources */,
+				3679332A298C94F80027CAF1 /* ModList.swift in Sources */,
+				36616AF6298DF1EE00E92886 /* ModInfo.swift in Sources */,
+				362A6AAF298C5AB300D2B6D5 /* Types.swift in Sources */,
 				362A6AA2298C4B8200D2B6D5 /* ContentView.swift in Sources */,
 				362A6AA0298C4B8200D2B6D5 /* Trombone_Champ_Mod_ManagerApp.swift in Sources */,
+				36616AF4298DEFD500E92886 /* ModListRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +298,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -283,6 +317,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.candy.Trombone-Champ-Mod-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -292,6 +327,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -336,6 +372,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		362A6AB0298C625600D2B6D5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.9;
+			};
+		};
+		36616AF0298DECEF00E92886 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		362A6AB1298C625600D2B6D5 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 362A6AB0298C625600D2B6D5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		36616AF1298DECEF00E92886 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36616AF0298DECEF00E92886 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 362A6A94298C4B8200D2B6D5 /* Project object */;
 }
