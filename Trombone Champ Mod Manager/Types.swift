@@ -67,6 +67,11 @@ struct Dependency: Codable {
     let image_src: String
 }
 
+struct ThunderstoreManifest: Codable {
+    let name: String
+    let version_number: String
+}
+
 struct PackageVersion: Codable {
     let date_created: String
     let download_count: Int

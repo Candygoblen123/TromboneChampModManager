@@ -12,7 +12,9 @@ import ZIPFoundation
 struct ModListRow: View {
     @State var trmbChampDispPath: URL?
     @State var installingPackages: [String] = []
-    @AppStorage("installedPackages") var installedPackages: [String] = []
+    @State var needsUpdate: Bool = false
+    @Binding var installedPackages: [String]
+    
     var package: PackagePreview
     
     var body: some View {
@@ -29,14 +31,27 @@ struct ModListRow: View {
                     }
                 }.disabled(true)
             } else if installedPackages.contains([package.id]) {
-                Text("Installed")
-                    .tint(.green)
-                Image(systemName: "checkmark.circle")
-                    .padding(.horizontal)
-                    .tint(.green)
-                Button("Reinstall") {
-                    Task {
-                        await installPackage(package)
+                if needsUpdate {
+                    Text("Update Available!")
+                    Button("Update") {
+                        Task {
+                            await installPackage(package)
+                            needsUpdate = false
+                        }
+                    }
+                } else {
+                    Text("Installed")
+                        .onAppear() {
+                            Task {
+                                needsUpdate = await checkForUpdate()
+                            }
+                        }
+                    Image(systemName: "checkmark.circle")
+                        .padding(.horizontal)
+                    Button("Reinstall") {
+                        Task {
+                            await installPackage(package)
+                        }
                     }
                 }
                 Button("Uninstall") {
@@ -54,23 +69,57 @@ struct ModListRow: View {
         }
     }
     
+    func checkForUpdate() async -> Bool {
+        guard let trmbChampPath = trmbChampDispPath else { return false }
+        let manifestPath = trmbChampPath.appending(path: "BepInEx/plugins/\(package.id)/manifest.json")
+        guard let manifestData = FileManager.default.contents(atPath: manifestPath.path(percentEncoded: false)) else { return false }
+        let manifest = try? JSONDecoder().decode(ThunderstoreManifest.self, from: manifestData)
+        guard let fullPkg = try? await fetchFullData(package: package) else { return false }
+        guard let latest_version = fullPkg.versions.first?.version_number else { return false }
+        if let manifest = manifest {
+            let versionCompare = manifest.version_number.compare(latest_version, options: .numeric)
+            if versionCompare == .orderedAscending {
+                print("\(package.id)")
+                return true
+            }
+        }
+        
+        return false
+    }
     
     func installPackage(_ package: PackagePreview) async {
-        let fullPkg = await fetchFullData(package: package)
-        await installPackage(fullPkg)
+        do {
+            let fullPkg = try await fetchFullData(package: package)
+            await installPackage(fullPkg)
+        } catch {
+            ContentView().showAlert("Failed to download the mod metadata.")
+            return
+        }
     }
     
     func installDependencies(_ dependencies: [Dependency]) async {
         for dependency in dependencies {
             if dependency.package_name == "BepInExPack_TromboneChamp" { continue } // We already installed it!
-            let fullDepData = await fetchFullData(namespace: dependency.namespace, package_name: dependency.package_name, community_identifier: dependency.community_identifier)
-            await installPackage(fullDepData)
+            if installedPackages.contains(["\(dependency.namespace)-\(dependency.package_name)"]) { continue }
+            do {
+                let fullDepData = try await fetchFullData(namespace: dependency.namespace, package_name: dependency.package_name, community_identifier: dependency.community_identifier)
+                await installPackage(fullDepData)
+            } catch {
+                ContentView().showAlert("Failed to download the mod metadata.")
+                return
+            }
         }
     }
     
     func uninstallPackage(_ package: PackagePreview) async {
-        let fullPkg = await fetchFullData(package: package)
-        await uninstallPackage(fullPkg)
+        do {
+            let fullPkg = try await fetchFullData(package: package)
+            await uninstallPackage(fullPkg)
+        } catch {
+            ContentView().showAlert("Failed to download the mod metadata.")
+            return
+        }
+        
     }
     
     func uninstallPackage(_ package: Package) async {
@@ -82,7 +131,7 @@ struct ModListRow: View {
         do {
             (urlOrNil, _) = try await URLSession.shared.download(from: URL(string: package.download_url)!)
         } catch {
-            ContentView().showAlert("Failed to download the mod release. Do you have access to Github?")
+            ContentView().showAlert("Failed to download the mod release.")
             return
         }
         
@@ -111,7 +160,12 @@ struct ModListRow: View {
             let isDir = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             if FileManager.default.fileExists(atPath: extractPath.path(percentEncoded: false), isDirectory: isDir) {
                 if !isDir.pointee.boolValue && !entry.path.hasPrefix("BepInEx/config") {
-                    try! FileManager.default.removeItem(at: extractPath)
+                    do {
+                        try FileManager.default.removeItem(at: extractPath)
+                    } catch {
+                        ContentView().showAlert("Failed to delete \(extractPath).")
+                        return
+                    }
                 }
             }
         })
@@ -135,7 +189,7 @@ struct ModListRow: View {
         do {
             (urlOrNil, _) = try await URLSession.shared.download(from: URL(string: package.download_url)!)
         } catch {
-            ContentView().showAlert("Failed to download the mod release. Do you have access to Github?")
+            ContentView().showAlert("Failed to download the mod release.")
             return
         }
         
@@ -162,15 +216,21 @@ struct ModListRow: View {
                 
             }
             
-            let isDir = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
-            if FileManager.default.fileExists(atPath: extractPath.path(percentEncoded: false), isDirectory: isDir) {
-                if !isDir.pointee.boolValue {
-                    try! FileManager.default.removeItem(at: extractPath)
-                    _ = try! modArchive?.extract(entry, to: extractPath)
+            do {
+                let isDir = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+                if FileManager.default.fileExists(atPath: extractPath.path(percentEncoded: false), isDirectory: isDir) {
+                    if !isDir.pointee.boolValue {
+                        try FileManager.default.removeItem(at: extractPath)
+                        _ = try modArchive?.extract(entry, to: extractPath)
+                    }
+                } else {
+                    _ = try modArchive?.extract(entry, to: extractPath)
                 }
-            } else {
-                _ = try! modArchive?.extract(entry, to: extractPath)
+            } catch {
+                ContentView().showAlert("Failed to extract the file \(extractPath). Does it already exist?")
+                return
             }
+            
         })
         
         try? FileManager.default.removeItem(at: urlOrNil)
@@ -181,15 +241,15 @@ struct ModListRow: View {
         }
     }
     
-    func fetchFullData(namespace: String, package_name: String, community_identifier: String = "trombone-champ") async -> Package {
+    func fetchFullData(namespace: String, package_name: String, community_identifier: String = "trombone-champ") async throws -> Package {
         let packageURL = URL(string: "https://thunderstore.io/api/experimental/frontend/c/\(community_identifier)/p/\(namespace)/\(package_name)")!
-        let (data, _) = try! await URLSession.shared.data(from: packageURL)
-        let packageData = try! JSONDecoder().decode(Package.self, from: data)
+        let (data, _) = try await URLSession.shared.data(from: packageURL)
+        let packageData = try JSONDecoder().decode(Package.self, from: data)
         return packageData
     }
     
-    func fetchFullData(package: PackagePreview) async -> Package {
-        return await fetchFullData(namespace: package.namespace, package_name: package.package_name)
+    func fetchFullData(package: PackagePreview) async throws -> Package {
+        return try await fetchFullData(namespace: package.namespace, package_name: package.package_name)
     }
 }
 

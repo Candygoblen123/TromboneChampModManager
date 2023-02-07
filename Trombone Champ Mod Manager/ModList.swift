@@ -13,18 +13,18 @@ struct ModList: View {
     @State var communityPackageList: [PackagePreview]?
     @State var trmbChampDispPath: URL?
     @Binding var selectedPackage: PackagePreview?
-    
-    
+    @State var installedPackages: [String] = []
     
     var body: some View {
         if let packages = communityPackageList {
             List(packages, id: \.self, selection: $selectedPackage) { package in
-                ModListRow(trmbChampDispPath: trmbChampDispPath, package: package)
+                ModListRow(trmbChampDispPath: trmbChampDispPath, installedPackages: $installedPackages, package: package)
             }
         } else {
             ProgressView()
                 .onAppear() {
                     Task {
+                        installedPackages = getInstalledPackages()
                         await fetchPackages()
                     }
                 }
@@ -47,17 +47,17 @@ struct ModList: View {
         decoder.dateDecodingStrategy = .iso8601
         let communityPackages = try! decoder.decode(ThunderstorePackages.self, from: data)
         
-        communityPackageList = communityPackages.packages.filter({ $0.package_name != "BepInExPack_TromboneChamp" })
+        communityPackageList = communityPackages.packages.filter({ $0.package_name != "BepInExPack_TromboneChamp" && $0.package_name != "r2modman" })
     }
     
-    
+    func getInstalledPackages() -> [String] {
+        guard let trmbChampPath = trmbChampDispPath else { return [] }
+        
+        let contents = try? FileManager.default.contentsOfDirectory(atPath: trmbChampPath.appending(path: "BepInEx/plugins/").path(percentEncoded: false))
+        
+        return contents ?? []
+    }
 }
-
-//struct ModList_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ModList()
-//    }
-//}
 
 extension Array: RawRepresentable where Element: Codable {
     public init?(rawValue: String) {

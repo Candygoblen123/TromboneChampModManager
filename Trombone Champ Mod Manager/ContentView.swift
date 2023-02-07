@@ -18,7 +18,7 @@ struct ContentView: View {
         HSplitView {
             VStack(alignment: .leading) {
                 if !isbepinexInstalled {
-                    BepInExInstallView(trmbChampDispPath: trmbChampDispPath, contentView: self)
+                    BepInExInstallView(trmbChampDispPath: trmbChampDispPath, contentView: self).padding()
                 } else {
                     ModList(trmbChampDispPath: trmbChampDispPath, selectedPackage: $selectedPackage)
                 }
@@ -48,7 +48,6 @@ struct ContentView: View {
             Alert(title: Text("An error occoured"), message: Text(errMessage))
         })
         .padding([.top], 0)
-        //.focusedValue(\.selectedPackage, <#T##value: Value##Value#>)
     }
     
     static func checkDefaultInstallPath() -> URL? {
@@ -67,16 +66,10 @@ struct ContentView: View {
     
     public func showAlert(_ errMessage: String) {
         self.errMessage = errMessage
-        errPopup = true
+        self.errPopup = true
     }
     
     
     
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
 }
 

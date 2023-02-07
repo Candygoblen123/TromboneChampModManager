@@ -13,5 +13,8 @@ struct Trombone_Champ_Mod_ManagerApp: App {
         WindowGroup {
             ContentView()
         }
+        Settings {
+            
+        }
     }
 }

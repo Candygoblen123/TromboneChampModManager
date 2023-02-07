@@ -14,7 +14,7 @@ struct BepInExInstallView: View {
     @State var progressText = "Waiting to start..."
     @State var installComplete = false
     @State var launchOptionsText = ""
-    var contentView: ContentView?
+    var contentView: ContentView
     
     var body: some View {
         if !installComplete {
@@ -33,7 +33,7 @@ struct BepInExInstallView: View {
                         trmbChampDispPath = panel.url
                     }
                     
-                    contentView?.checkBepInEx()
+                    contentView.checkBepInEx()
                 }
             }
             .padding(.bottom)
@@ -71,7 +71,7 @@ struct BepInExInstallView: View {
             }
             
             Button("I've Finished!") {
-                contentView?.checkBepInEx()
+                contentView.checkBepInEx()
             }
         }
     }
@@ -80,14 +80,14 @@ struct BepInExInstallView: View {
     func installBepInEx() async {
         guard let trmbChampPath = trmbChampDispPath else {
             progressText = "Waiting to start..."
-            ContentView().showAlert("You didn't tell us where your trombone champ install is!")
+            contentView.showAlert("You didn't tell us where your trombone champ install is!")
             return
         }
         
         // Check if the trombone champ path is an actual trombone champ install
         if !FileManager.default.fileExists(atPath: trmbChampPath.appending(path: "Trombone Champ.app/Contents/MacOS/TromboneChamp").path(percentEncoded: false)) {
             progressText = "Error..."
-            ContentView().showAlert("The location you provided doesn't seem to have Trombone Champ.")
+            contentView.showAlert("The location you provided doesn't seem to have Trombone Champ.")
             return
         }
         
@@ -99,7 +99,7 @@ struct BepInExInstallView: View {
             (urlOrNil, _) = try await URLSession.shared.download(from: URL(string: "https://github.com/BepInEx/BepInEx/releases/download/v5.4.21/BepInEx_unix_5.4.21.0.zip")!)
         } catch {
             progressText = "Error..."
-            ContentView().showAlert("Failed to download the BepInEx release. Do you have access to Github?")
+            contentView.showAlert("Failed to download the BepInEx release. Do you have access to Github?")
             return
         }
         
@@ -110,7 +110,7 @@ struct BepInExInstallView: View {
             }
         } catch {
             progressText = "Error..."
-            ContentView().showAlert("Failed to delete \(bepinexURL.path(percentEncoded: false))")
+            contentView.showAlert("Failed to delete \(bepinexURL.path(percentEncoded: false))")
             return
         }
         
@@ -118,7 +118,7 @@ struct BepInExInstallView: View {
             try FileManager.default.moveItem(at: urlOrNil, to: bepinexURL)
         } catch {
             progressText = "Error..."
-            ContentView().showAlert("Failed to write to \(bepinexURL.path(percentEncoded: false)).")
+            contentView.showAlert("Failed to write to \(bepinexURL.path(percentEncoded: false)).")
             return
         }
         
@@ -136,7 +136,7 @@ struct BepInExInstallView: View {
                 _ = try bepinexZip?.extract(entry, to: extractedFilePath)
             } catch {
                 progressText = "Error..."
-                ContentView().showAlert("Failed to extract \(extractedFilePath.path(percentEncoded: false)) from BepInEx.zip. Try deleting the file and installing again.")
+                contentView.showAlert("Failed to extract \(extractedFilePath.path(percentEncoded: false)) from BepInEx.zip. Try deleting the file and installing again.")
                 return
             }
             
@@ -152,7 +152,7 @@ struct BepInExInstallView: View {
             try FileManager.default.setAttributes(perms, ofItemAtPath: trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))
         } catch {
             progressText = "Error..."
-            ContentView().showAlert("Failed to set execute permissions for the file run_bepinex.sh")
+            contentView.showAlert("Failed to set execute permissions for the file run_bepinex.sh")
             return
         }
         
@@ -163,8 +163,3 @@ struct BepInExInstallView: View {
     }
 }
 
-struct BepInExInstallView_Previews: PreviewProvider {
-    static var previews: some View {
-        BepInExInstallView()
-    }
-}
