@@ -124,6 +124,7 @@ struct ModListRow: View {
     
     func uninstallPackage(_ package: Package) async {
         guard let trmbChampPath = trmbChampDispPath else { return }
+        progress = 0.0
         installingPackages.append(package.id)
         print("Uninstalling \(package.namespace)-\(package.package_name)")
         
@@ -181,6 +182,7 @@ struct ModListRow: View {
     
     func installPackage(_ package: Package) async {
         guard let trmbChampPath = trmbChampDispPath else { return }
+        progress = 0.0
         installingPackages.append(package.id)
         await installDependencies(package.dependencies)
         print("Installing \(package.namespace).\(package.package_name)")

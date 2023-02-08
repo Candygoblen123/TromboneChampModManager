@@ -45,21 +45,21 @@ struct ModInfo: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onAppear {
                         Task {
-                            fullInfo = await fetchFullData(package: selectedPackage)
+                            fullInfo = try? await fetchFullData(package: selectedPackage)
                         }
                     }
             }
         }
     }
     
-    func fetchFullData(namespace: String, package_name: String, community_identifier: String = "trombone-champ") async -> Package {
+    func fetchFullData(namespace: String, package_name: String, community_identifier: String = "trombone-champ") async throws -> Package {
         let packageURL = URL(string: "https://thunderstore.io/api/experimental/frontend/c/\(community_identifier)/p/\(namespace)/\(package_name)")!
-        let (data, _) = try! await URLSession.shared.data(from: packageURL)
-        let packageData = try! JSONDecoder().decode(Package.self, from: data)
+        let (data, _) = try await URLSession.shared.data(from: packageURL)
+        let packageData = try JSONDecoder().decode(Package.self, from: data)
         return packageData
     }
     
-    func fetchFullData(package: PackagePreview) async -> Package {
-        return await fetchFullData(namespace: package.namespace, package_name: package.package_name)
+    func fetchFullData(package: PackagePreview) async throws -> Package {
+        return try await fetchFullData(namespace: package.namespace, package_name: package.package_name)
     }
 }

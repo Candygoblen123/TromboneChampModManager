@@ -14,6 +14,7 @@ struct ModList: View {
     @Binding var trmbChampDispPath: URL?
     @Binding var selectedPackage: PackagePreview?
     @State var installedPackages: [String] = []
+    @State var didError = false
     
     var body: some View {
         if let packages = communityPackageList {
@@ -21,13 +22,39 @@ struct ModList: View {
                 ModListRow(trmbChampDispPath: trmbChampDispPath, installedPackages: $installedPackages, package: package)
             }
         } else {
-            ProgressView()
-                .onAppear() {
-                    Task {
-                        installedPackages = getInstalledPackages()
-                        await fetchPackages()
+            VStack {
+                if didError {
+                    VStack {
+                        Image(systemName: "wifi.slash")
+                            .font(.largeTitle)
+                            .padding(.bottom)
+                        Text("No internet.")
+                        Button("Try again") {
+                            didError = false
+                            Task {
+                                do {
+                                    try await fetchPackages()
+                                } catch {
+                                    didError = true
+                                }
+                            }
+                        }
                     }
+                } else {
+                    ProgressView()
+                        .onAppear() {
+                            Task {
+                                installedPackages = getInstalledPackages()
+                                do {
+                                    try await fetchPackages()
+                                } catch {
+                                    didError = true
+                                }
+                            }
+                        }
                 }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         HStack {
             Button("Show Trombone Champ Install in Finder") {
@@ -43,16 +70,16 @@ struct ModList: View {
         }
         .frame(maxWidth: .infinity, alignment: .bottomTrailing)
         .padding(.top, 3)
-        .padding([.horizontal, .bottom])
+        .padding([.bottom])
     }
     
-    func fetchPackages() async {
+    func fetchPackages() async throws {
         let communityUrl = URL(string: "https://thunderstore.io/api/experimental/frontend/c/trombone-champ/packages/")!
-        let (data, _) = try! await URLSession.shared.data(from: communityUrl)
+        let (data, _) = try await URLSession.shared.data(from: communityUrl)
         
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        let communityPackages = try! decoder.decode(ThunderstorePackages.self, from: data)
+        let communityPackages = try decoder.decode(ThunderstorePackages.self, from: data)
         
         communityPackageList = communityPackages.packages.filter({ $0.package_name != "BepInExPack_TromboneChamp" && $0.package_name != "r2modman" })
     }
