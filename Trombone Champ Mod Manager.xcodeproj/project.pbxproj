@@ -70,12 +70,12 @@
 				362A6A9F298C4B8200D2B6D5 /* Trombone_Champ_Mod_ManagerApp.swift */,
 				362A6AA1298C4B8200D2B6D5 /* ContentView.swift */,
 				36793327298C8EED0027CAF1 /* BepInExInstallView.swift */,
+				36616AF5298DF1EE00E92886 /* ModInfo.swift */,
 				36793329298C94F80027CAF1 /* ModList.swift */,
 				36616AF3298DEFD500E92886 /* ModListRow.swift */,
 				362A6AA3298C4B8300D2B6D5 /* Assets.xcassets */,
 				362A6AA8298C4B8300D2B6D5 /* Trombone_Champ_Mod_Manager.entitlements */,
 				362A6AA5298C4B8300D2B6D5 /* Preview Content */,
-				36616AF5298DF1EE00E92886 /* ModInfo.swift */,
 			);
 			path = "Trombone Champ Mod Manager";
 			sourceTree = "<group>";
@@ -302,12 +302,14 @@
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Trombone Champ Mod Manager/Preview Content\"";
 				DEVELOPMENT_TEAM = RJNC97Y8QD;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Trombone Champ Mod Manager";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -332,12 +334,14 @@
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Trombone Champ Mod Manager/Preview Content\"";
 				DEVELOPMENT_TEAM = RJNC97Y8QD;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Trombone Champ Mod Manager";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

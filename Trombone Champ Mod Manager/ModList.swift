@@ -11,7 +11,7 @@ import CachedAsyncImage
 
 struct ModList: View {
     @State var communityPackageList: [PackagePreview]?
-    @State var trmbChampDispPath: URL?
+    @Binding var trmbChampDispPath: URL?
     @Binding var selectedPackage: PackagePreview?
     @State var installedPackages: [String] = []
     

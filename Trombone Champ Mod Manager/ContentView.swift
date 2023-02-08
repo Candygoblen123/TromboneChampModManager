@@ -8,19 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("TrmbChampInstallPath") static var storedInstallPath: String = ""
     @State var trmbChampDispPath : URL? = checkDefaultInstallPath()
     @State var isbepinexInstalled = false
     @State var errPopup = false
     @State var errMessage = ""
     @State var selectedPackage: PackagePreview?
+    @State static var needChangeArguments: Bool = false
     
     var body: some View {
         HSplitView {
             VStack(alignment: .leading) {
                 if !isbepinexInstalled {
-                    BepInExInstallView(trmbChampDispPath: trmbChampDispPath, contentView: self).padding()
+                    BepInExInstallView(trmbChampDispPath: $trmbChampDispPath, contentView: self).padding()
                 } else {
-                    ModList(trmbChampDispPath: trmbChampDispPath, selectedPackage: $selectedPackage)
+                    ModList(trmbChampDispPath: $trmbChampDispPath, selectedPackage: $selectedPackage)
                 }
                 
             }
@@ -51,6 +53,13 @@ struct ContentView: View {
     }
     
     static func checkDefaultInstallPath() -> URL? {
+        if storedInstallPath != "" {
+            if let trmbChampDefaultPath = URL(string: storedInstallPath) {
+                if FileManager().fileExists(atPath: trmbChampDefaultPath.path(percentEncoded: false)) {
+                    return trmbChampDefaultPath
+                }
+            }
+        }
         guard let trmbChampDefaultPath = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.appending(path: "Steam/steamapps/common/TromboneChamp") else { return nil }
         if FileManager().fileExists(atPath: trmbChampDefaultPath.path(percentEncoded: false)) {
             return trmbChampDefaultPath
@@ -60,7 +69,7 @@ struct ContentView: View {
     
     public func checkBepInEx() {
         guard let bepPath = trmbChampDispPath?.appending(path: "BepInEx/core/BepInEx.dll").path(percentEncoded: false) else { isbepinexInstalled = false; return}
-        
+        ContentView.storedInstallPath = trmbChampDispPath?.absoluteString ?? ""
         isbepinexInstalled = FileManager.default.fileExists(atPath: bepPath)
     }
     

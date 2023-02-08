@@ -9,7 +9,7 @@ import SwiftUI
 import ZIPFoundation
 
 struct BepInExInstallView: View {
-    @State var trmbChampDispPath: URL?
+    @Binding var trmbChampDispPath: URL?
     @State var tmp = ""
     @State var progressText = "Waiting to start..."
     @State var installComplete = false
@@ -19,9 +19,12 @@ struct BepInExInstallView: View {
     var body: some View {
         if !installComplete {
             Text("Welcome to Trombone Champ Mod Manager!").font(.title)
+            if (trmbChampDispPath == nil) {
+                Text("We couldn't autmoatically find your installation of Trombone Champ. Please use the change button to select it manually.")
+            }
             HStack {
                 Text("Trombone Champ Location:")
-                TextField(trmbChampDispPath?.path(percentEncoded: false) ?? "We couldn't autmoatically find your installation of Trombone Champ. Please use the change button to select it manually.", text: $tmp)
+                TextField(trmbChampDispPath?.path(percentEncoded: false) ?? "", text: $tmp)
                     .disabled(true)
                 Spacer()
                 Button("Change...") {
