@@ -13,6 +13,7 @@ struct ModListRow: View {
     @State var trmbChampDispPath: URL?
     @State var installingPackages: [String] = []
     @State var needsUpdate: Bool = false
+    @State var progress = 0.0
     @Binding var installedPackages: [String]
     
     var package: PackagePreview
@@ -24,7 +25,7 @@ struct ModListRow: View {
             Text(package.package_name)
             Spacer()
             if installingPackages.contains([package.id]) {
-                ProgressView().padding(.trailing)
+                ProgressView(value: progress).progressViewStyle(.circular).padding(.trailing)
                 Button("Working...") {
                     Task {
                         await installPackage(package)
@@ -79,7 +80,6 @@ struct ModListRow: View {
         if let manifest = manifest {
             let versionCompare = manifest.version_number.compare(latest_version, options: .numeric)
             if versionCompare == .orderedAscending {
-                print("\(package.id)")
                 return true
             }
         }
@@ -187,7 +187,7 @@ struct ModListRow: View {
         
         let urlOrNil: URL
         do {
-            (urlOrNil, _) = try await URLSession.shared.download(from: URL(string: package.download_url)!)
+            (urlOrNil, _) = try await URLSession.shared.download(for: .init(url: URL(string: package.download_url)!), delegate: SessionTaskDelegate(modListRow: self))
         } catch {
             ContentView().showAlert("Failed to download the mod release.")
             return
@@ -234,7 +234,6 @@ struct ModListRow: View {
                 ContentView().showAlert("Failed to extract the file \(extractPath). Does it already exist?")
                 return
             }
-            
         })
         
         try? FileManager.default.removeItem(at: urlOrNil)
@@ -255,6 +254,24 @@ struct ModListRow: View {
     func fetchFullData(package: PackagePreview) async throws -> Package {
         return try await fetchFullData(namespace: package.namespace, package_name: package.package_name)
     }
+    
+    
 }
 
+
+class SessionTaskDelegate: NSObject, URLSessionTaskDelegate {
+    var progressObservation: NSKeyValueObservation?
+    var modListRow: ModListRow
+    
+    init(modListRow: ModListRow) {
+        self.modListRow = modListRow
+        super.init()
+    }
+    
+    public func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
+        progressObservation = task.progress.observe(\.fractionCompleted) { progress, value in
+            self.modListRow.progress = progress.fractionCompleted
+        }
+    }
+}
 
