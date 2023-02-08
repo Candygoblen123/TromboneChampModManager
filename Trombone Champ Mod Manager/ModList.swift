@@ -29,10 +29,17 @@ struct ModList: View {
                     }
                 }
         }
-        Button("Launch Trombone Champ!") {
-            let steam = URL(string: "steam://rungameid/1059990")!
-            NSWorkspace.shared.open(steam)
-            
+        HStack {
+            Button("Show Trombone Champ Install in Finder") {
+                if let trmbChampPath = trmbChampDispPath {
+                    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: trmbChampPath.path(percentEncoded: false))
+                }
+            }
+            Button("Launch Trombone Champ!") {
+                let steam = URL(string: "steam://rungameid/1059990")!
+                NSWorkspace.shared.open(steam)
+                
+            }
         }
         .frame(maxWidth: .infinity, alignment: .bottomTrailing)
         .padding(.top, 3)

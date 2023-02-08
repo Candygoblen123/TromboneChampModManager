@@ -226,6 +226,10 @@ struct ModListRow: View {
                 } else {
                     _ = try modArchive?.extract(entry, to: extractPath)
                 }
+                
+                if extractPath.pathExtension == "dylib" {
+                    try FileManager.default.createSymbolicLink(at: trmbChampPath.appending(path: "BepInEx/native/\(entry.path)"), withDestinationURL: extractPath)
+                }
             } catch {
                 ContentView().showAlert("Failed to extract the file \(extractPath). Does it already exist?")
                 return
