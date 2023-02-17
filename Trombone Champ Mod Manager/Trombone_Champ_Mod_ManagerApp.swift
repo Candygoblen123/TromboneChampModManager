@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct Trombone_Champ_Mod_ManagerApp: App {
+    static var contentView = ContentView()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Trombone_Champ_Mod_ManagerApp.contentView
+        }
+        Settings {
+            SettingsView(contentView: Trombone_Champ_Mod_ManagerApp.contentView)
         }
     }
 }

@@ -9,22 +9,27 @@ import SwiftUI
 import ZIPFoundation
 
 struct BepInExInstallView: View {
-    @Binding var trmbChampDispPath: URL?
+    @Binding var trmbChampDispPath: String
+    @State var trmbChampUrl: String = ""
     @State var tmp = ""
     @State var progressText = "Waiting to start..."
     @State var installComplete = false
     @State var launchOptionsText = ""
     var contentView: ContentView
+    var pathChanged: Bool = false
     
     var body: some View {
         if !installComplete {
             Text("Welcome to Trombone Champ Mod Manager!").font(.title)
-            if (trmbChampDispPath == nil) {
+                .onAppear() {
+                    trmbChampUrl = URL(string: trmbChampDispPath)?.path(percentEncoded: false) ?? ""
+                }
+            if (trmbChampDispPath == "") {
                 Text("We couldn't autmoatically find your installation of Trombone Champ. Please use the change button to select it manually.")
             }
             HStack {
                 Text("Trombone Champ Location:")
-                TextField(trmbChampDispPath?.path(percentEncoded: false) ?? "", text: $tmp)
+                TextField(trmbChampUrl, text: $tmp)
                     .disabled(true)
                 Spacer()
                 Button("Change...") {
@@ -33,10 +38,13 @@ struct BepInExInstallView: View {
                     panel.canChooseDirectories = true
                     panel.canChooseFiles = false
                     if panel.runModal() == .OK {
-                        trmbChampDispPath = panel.url
+                        trmbChampDispPath = panel.url!.absoluteString
+                        trmbChampUrl = URL(string: trmbChampDispPath)?.path(percentEncoded: false) ?? ""
+                        contentView.checkBepInEx()
                     }
                     
-                    contentView.checkBepInEx()
+                    
+                    
                 }
             }
             .padding(.bottom)
@@ -81,11 +89,12 @@ struct BepInExInstallView: View {
     
     
     func installBepInEx() async {
-        guard let trmbChampPath = trmbChampDispPath else {
+        guard trmbChampDispPath != "", let trmbChampPath = URL(string: trmbChampDispPath) else {
             progressText = "Waiting to start..."
             contentView.showAlert("You didn't tell us where your trombone champ install is!")
             return
         }
+        
         
         // Check if the trombone champ path is an actual trombone champ install
         if !FileManager.default.fileExists(atPath: trmbChampPath.appending(path: "Trombone Champ.app/Contents/MacOS/TromboneChamp").path(percentEncoded: false)) {

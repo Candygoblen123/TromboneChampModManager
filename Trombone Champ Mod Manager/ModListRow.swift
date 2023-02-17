@@ -10,7 +10,7 @@ import CachedAsyncImage
 import ZIPFoundation
 
 struct ModListRow: View {
-    @State var trmbChampDispPath: URL?
+    @Binding var trmbChampDispPath: String
     @State var installingPackages: [String] = []
     @State var needsUpdate: Bool = false
     @State var progress = 0.0
@@ -71,7 +71,7 @@ struct ModListRow: View {
     }
     
     func checkForUpdate() async -> Bool {
-        guard let trmbChampPath = trmbChampDispPath else { return false }
+        guard let trmbChampPath = URL(string: trmbChampDispPath) else { return false }
         let manifestPath = trmbChampPath.appending(path: "BepInEx/plugins/\(package.id)/manifest.json")
         guard let manifestData = FileManager.default.contents(atPath: manifestPath.path(percentEncoded: false)) else { return false }
         let manifest = try? JSONDecoder().decode(ThunderstoreManifest.self, from: manifestData)
@@ -123,7 +123,7 @@ struct ModListRow: View {
     }
     
     func uninstallPackage(_ package: Package) async {
-        guard let trmbChampPath = trmbChampDispPath else { return }
+        guard let trmbChampPath = URL(string: trmbChampDispPath) else { return }
         progress = 0.0
         installingPackages.append(package.id)
         print("Uninstalling \(package.namespace)-\(package.package_name)")
@@ -181,7 +181,7 @@ struct ModListRow: View {
     }
     
     func installPackage(_ package: Package) async {
-        guard let trmbChampPath = trmbChampDispPath else { return }
+        guard let trmbChampPath = URL(string: trmbChampDispPath) else { return }
         progress = 0.0
         installingPackages.append(package.id)
         await installDependencies(package.dependencies)

@@ -11,7 +11,7 @@ import CachedAsyncImage
 
 struct ModList: View {
     @State var communityPackageList: [PackagePreview]?
-    @Binding var trmbChampDispPath: URL?
+    @Binding var trmbChampDispPath: String
     @Binding var selectedPackage: PackagePreview?
     @State var installedPackages: [String] = []
     @State var didError = false
@@ -19,7 +19,7 @@ struct ModList: View {
     var body: some View {
         if let packages = communityPackageList {
             List(packages, id: \.self, selection: $selectedPackage) { package in
-                ModListRow(trmbChampDispPath: trmbChampDispPath, installedPackages: $installedPackages, package: package)
+                ModListRow(trmbChampDispPath: $trmbChampDispPath, installedPackages: $installedPackages, package: package)
             }
         } else {
             VStack {
@@ -58,7 +58,7 @@ struct ModList: View {
         }
         HStack {
             Button("Show Trombone Champ Install in Finder") {
-                if let trmbChampPath = trmbChampDispPath {
+                if let trmbChampPath = URL(string: trmbChampDispPath) {
                     NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: trmbChampPath.path(percentEncoded: false))
                 }
             }
@@ -85,7 +85,7 @@ struct ModList: View {
     }
     
     func getInstalledPackages() -> [String] {
-        guard let trmbChampPath = trmbChampDispPath else { return [] }
+        guard let trmbChampPath = URL(string: trmbChampDispPath) else { return [] }
         
         let contents = try? FileManager.default.contentsOfDirectory(atPath: trmbChampPath.appending(path: "BepInEx/plugins/").path(percentEncoded: false))
         
