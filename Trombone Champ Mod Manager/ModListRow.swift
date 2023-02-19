@@ -163,6 +163,9 @@ struct ModListRow: View {
                 if !isDir.pointee.boolValue && !entry.path.hasPrefix("BepInEx/config") {
                     do {
                         try FileManager.default.removeItem(at: extractPath)
+                        if extractPath.pathExtension == "dylib" {
+                            try FileManager.default.removeItem(at: trmbChampPath.appending(path: "BepInEx/native/\(entry.path)"))
+                        }
                     } catch {
                         ContentView().showAlert("Failed to delete \(extractPath).")
                         return
@@ -230,7 +233,10 @@ struct ModListRow: View {
                 }
                 
                 if extractPath.pathExtension == "dylib" {
-                    try FileManager.default.createSymbolicLink(at: trmbChampPath.appending(path: "BepInEx/native/\(entry.path)"), withDestinationURL: extractPath)
+                    if !FileManager.default.fileExists(atPath: trmbChampPath.appending(path: "BepInEx/native/").path(percentEncoded: false)) {
+                        try FileManager.default.createDirectory(atPath: trmbChampPath.appending(path: "BepInEx/native/").path(percentEncoded: false), withIntermediateDirectories: true)
+                    }
+                    try FileManager.default.copyItem(at: extractPath, to: trmbChampPath.appending(path: "BepInEx/native/\(entry.path)"))
                 }
             } catch {
                 ContentView().showAlert("Failed to extract the file \(extractPath). Does it already exist?")
