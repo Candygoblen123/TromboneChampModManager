@@ -241,6 +241,12 @@ struct ModListRow: View {
                         try FileManager.default.createDirectory(atPath: trmbChampPath.appending(path: "BepInEx/native/").path(percentEncoded: false), withIntermediateDirectories: true)
                     }
                     try FileManager.default.copyItem(at: extractPath, to: trmbChampPath.appending(path: "BepInEx/native/\(extractPath.lastPathComponent)"))
+                    
+                    let xattr = Process()
+                    xattr.executableURL = URL(string: "file:///usr/bin/xattr")
+                    xattr.arguments = ["-d", "com.apple.quarantine", "\(trmbChampPath.appending(path: "BepInEx/native/\(extractPath.lastPathComponent)").path(percentEncoded: false))"]
+                    try xattr.run()
+                    xattr.waitUntilExit()
                 }
             } catch {
                 ContentView().showAlert("Failed to extract the file \(extractPath). Does it already exist?")
