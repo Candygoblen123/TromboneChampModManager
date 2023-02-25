@@ -139,7 +139,9 @@ struct ModListRow: View {
         let modArchive = Archive(url: urlOrNil, accessMode: .read)
         modArchive?.forEach({ entry in
             var extractPath = trmbChampPath
-            if !entry.path.hasPrefix("BepInEx") {
+            if entry.path.hasPrefix("plugins") {
+                extractPath = trmbChampPath.appending(path: "BepInEx/plugins/\(package.id)/\(entry.path[entry.path.index(entry.path.startIndex, offsetBy: 7)..<entry.path.endIndex])")
+            } else if !entry.path.hasPrefix("BepInEx") {
                 extractPath = trmbChampPath.appending(path: "BepInEx/plugins/\(package.id)/\(entry.path)")
             } else if entry.path.hasPrefix("BepInEx/config") {
                 extractPath = trmbChampPath.appending(path: entry.path)
@@ -164,7 +166,7 @@ struct ModListRow: View {
                     do {
                         try FileManager.default.removeItem(at: extractPath)
                         if extractPath.pathExtension == "dylib" {
-                            try FileManager.default.removeItem(at: trmbChampPath.appending(path: "BepInEx/native/\(entry.path)"))
+                            try FileManager.default.removeItem(at: trmbChampPath.appending(path: "BepInEx/native/\(extractPath.lastPathComponent)"))
                         }
                     } catch {
                         ContentView().showAlert("Failed to delete \(extractPath).")
@@ -201,7 +203,9 @@ struct ModListRow: View {
         let modArchive = Archive(url: urlOrNil, accessMode: .read)
         modArchive?.forEach({ entry in
             var extractPath = trmbChampPath
-            if !entry.path.hasPrefix("BepInEx") {
+            if entry.path.hasPrefix("plugins") {
+                extractPath = trmbChampPath.appending(path: "BepInEx/plugins/\(package.id)/\(entry.path[entry.path.index(entry.path.startIndex, offsetBy: 7)..<entry.path.endIndex])")
+            } else if !entry.path.hasPrefix("BepInEx") {
                 extractPath = trmbChampPath.appending(path: "BepInEx/plugins/\(package.id)/\(entry.path)")
             } else if entry.path.hasPrefix("BepInEx/config") {
                 extractPath = trmbChampPath.appending(path: entry.path)
@@ -236,7 +240,7 @@ struct ModListRow: View {
                     if !FileManager.default.fileExists(atPath: trmbChampPath.appending(path: "BepInEx/native/").path(percentEncoded: false)) {
                         try FileManager.default.createDirectory(atPath: trmbChampPath.appending(path: "BepInEx/native/").path(percentEncoded: false), withIntermediateDirectories: true)
                     }
-                    try FileManager.default.copyItem(at: extractPath, to: trmbChampPath.appending(path: "BepInEx/native/\(entry.path)"))
+                    try FileManager.default.copyItem(at: extractPath, to: trmbChampPath.appending(path: "BepInEx/native/\(extractPath.lastPathComponent)"))
                 }
             } catch {
                 ContentView().showAlert("Failed to extract the file \(extractPath). Does it already exist?")
