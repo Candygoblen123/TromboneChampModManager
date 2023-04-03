@@ -169,6 +169,10 @@ struct BepInExInstallView: View {
         
         progressText = "Finishing up..."
         try? FileManager.default.removeItem(at: bepinexURL)
+        if let scriptUrl = Bundle.main.url(forResource: "run_bepinex", withExtension: "sh") {
+            try? FileManager.default.removeItem(at: trmbChampPath.appending(path: "run_bepinex.sh"))
+            try? FileManager.default.copyItem(at: scriptUrl, to: trmbChampPath.appending(path: "run_bepinex.sh"))
+        }
         do {
             var perms = try FileManager.default.attributesOfItem(atPath: trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))
             

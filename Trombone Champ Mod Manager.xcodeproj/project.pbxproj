@@ -19,6 +19,7 @@
 		36616AF6298DF1EE00E92886 /* ModInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36616AF5298DF1EE00E92886 /* ModInfo.swift */; };
 		36793328298C8EED0027CAF1 /* BepInExInstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36793327298C8EED0027CAF1 /* BepInExInstallView.swift */; };
 		3679332A298C94F80027CAF1 /* ModList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36793329298C94F80027CAF1 /* ModList.swift */; };
+		36E6EBA529DB1DC100364AB2 /* run_bepinex.sh in Resources */ = {isa = PBXBuildFile; fileRef = 36E6EBA429DB1DC100364AB2 /* run_bepinex.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		36616AF5298DF1EE00E92886 /* ModInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModInfo.swift; sourceTree = "<group>"; };
 		36793327298C8EED0027CAF1 /* BepInExInstallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BepInExInstallView.swift; sourceTree = "<group>"; };
 		36793329298C94F80027CAF1 /* ModList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModList.swift; sourceTree = "<group>"; };
+		36E6EBA429DB1DC100364AB2 /* run_bepinex.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run_bepinex.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 		362A6A9E298C4B8200D2B6D5 /* Trombone Champ Mod Manager */ = {
 			isa = PBXGroup;
 			children = (
+				36E6EBA429DB1DC100364AB2 /* run_bepinex.sh */,
 				362A6AAE298C5AB300D2B6D5 /* Types.swift */,
 				362A6A9F298C4B8200D2B6D5 /* Trombone_Champ_Mod_ManagerApp.swift */,
 				362A6AA1298C4B8200D2B6D5 /* ContentView.swift */,
@@ -159,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				362A6AA7298C4B8300D2B6D5 /* Preview Assets.xcassets in Resources */,
+				36E6EBA529DB1DC100364AB2 /* run_bepinex.sh in Resources */,
 				362A6AA4298C4B8300D2B6D5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
