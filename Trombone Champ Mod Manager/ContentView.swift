@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("TrmbChampInstallPath") static var storedInstallPath: String = ""
+    @AppStorage("SteamArgCheck") static var steamArgsSet: Bool = true
     @State var isbepinexInstalled = false
     @State var errPopup = false
     @State var errMessage = ""
@@ -73,7 +74,9 @@ struct ContentView: View {
         guard let trmbChampPath = URL(string: ContentView.storedInstallPath) else {isbepinexInstalled = false; return}
         let bepPath = trmbChampPath.appending(path: "BepInEx/core/BepInEx.dll").path(percentEncoded: false)
         ContentView.storedInstallPath = trmbChampPath.absoluteString
-        isbepinexInstalled = FileManager.default.fileExists(atPath: bepPath)
+        if ContentView.steamArgsSet {
+            isbepinexInstalled = FileManager.default.fileExists(atPath: bepPath)
+        }
     }
     
     public func showAlert(_ errMessage: String) {

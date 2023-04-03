@@ -13,17 +13,20 @@ struct BepInExInstallView: View {
     @State var trmbChampUrl: String = ""
     @State var tmp = ""
     @State var progressText = "Waiting to start..."
-    @State var installComplete = false
+    @State var installComplete: Bool = false
+    @AppStorage("DidInstall") var didInstall: Bool = false
     @State var launchOptionsText = ""
     var contentView: ContentView
     var pathChanged: Bool = false
     
     var body: some View {
+        Text("Welcome to Trombone Champ Mod Manager!").font(.title)
+            .onAppear() {
+                trmbChampUrl = URL(string: trmbChampDispPath)?.path(percentEncoded: false) ?? ""
+                installComplete = didInstall
+            }
         if !installComplete {
-            Text("Welcome to Trombone Champ Mod Manager!").font(.title)
-                .onAppear() {
-                    trmbChampUrl = URL(string: trmbChampDispPath)?.path(percentEncoded: false) ?? ""
-                }
+            
             if (trmbChampDispPath == "") {
                 Text("We couldn't autmoatically find your installation of Trombone Champ. Please use the change button to select it manually.")
             }
@@ -57,6 +60,7 @@ struct BepInExInstallView: View {
                 Button("Install BepInEx!") {
                     Task {
                         await installBepInEx()
+                        
                     }
                 }
             }
@@ -70,10 +74,17 @@ struct BepInExInstallView: View {
                 Text("5. Copy and paste the Text in the box below into the Launch Options field.")
                 Text("6. Launch Trombone Champ at least once")
                 
+            }.onAppear() {
+                ContentView.steamArgsSet = false
             }
             
             HStack {
                 TextField(launchOptionsText, text: .constant(launchOptionsText))
+                    .onAppear() {
+                        if let trmbChampPath = URL(string: trmbChampDispPath) {
+                            launchOptionsText = "\"\(trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))\" %command%"
+                        }
+                    }
                 Button("Copy") {
                     let clipboard = NSPasteboard.general
                     clipboard.clearContents()
@@ -82,6 +93,8 @@ struct BepInExInstallView: View {
             }
             
             Button("I've Finished!") {
+                ContentView.steamArgsSet = true
+                didInstall = false
                 contentView.checkBepInEx()
             }
         }
@@ -170,6 +183,7 @@ struct BepInExInstallView: View {
         
         launchOptionsText = "\"\(trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))\" %command%"
         installComplete = true
+        didInstall = true
         
         progressText = "Done!"
     }
