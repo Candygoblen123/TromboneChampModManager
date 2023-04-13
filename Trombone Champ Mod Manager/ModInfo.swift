@@ -5,7 +5,7 @@
 //  Created by Andrew Glaze on 2/3/23.
 //
 
-import CachedAsyncImage
+import Kingfisher
 import SwiftUI
 
 struct ModInfo: View {
@@ -16,7 +16,7 @@ struct ModInfo: View {
         if let selectedPackage = selectedPackage {
             if let fullInfo = fullInfo {
                 VStack(alignment: .center) {
-                    CachedAsyncImage(url: URL(string: fullInfo.image_src))
+                    KFImage(URL(string: fullInfo.image_src))
                         .padding()
                     Text(fullInfo.package_name)
                         .font(.title2)

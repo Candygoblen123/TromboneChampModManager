@@ -118,78 +118,80 @@ struct BepInExInstallView: View {
         
         progressText = "Downloading BepInEx..."
         // Download the thing
-        
-        let urlOrNil: URL
-        do {
-            (urlOrNil, _) = try await URLSession.shared.download(from: URL(string: "https://github.com/BepInEx/BepInEx/releases/download/v5.4.21/BepInEx_unix_5.4.21.0.zip")!)
-        } catch {
-            progressText = "Error..."
-            contentView.showAlert("Failed to download the BepInEx release. Do you have access to Github?")
-            return
-        }
-        
-        let bepinexURL = trmbChampPath.appending(path: "BepInEx.zip")
-        do {
-            if FileManager.default.fileExists(atPath: bepinexURL.path(percentEncoded: false)) {
-                try FileManager.default.removeItem(at: bepinexURL)
-            }
-        } catch {
-            progressText = "Error..."
-            contentView.showAlert("Failed to delete \(bepinexURL.path(percentEncoded: false))")
-            return
-        }
-        
-        do {
-            try FileManager.default.moveItem(at: urlOrNil, to: bepinexURL)
-        } catch {
-            progressText = "Error..."
-            contentView.showAlert("Failed to write to \(bepinexURL.path(percentEncoded: false)).")
-            return
-        }
-        
-        progressText = "Extracting BepInEx..."
-        
-        
-        let bepinexZip = Archive(url: bepinexURL, accessMode: .read)
-        
-        bepinexZip?.forEach({ entry in
-            let extractedFilePath = trmbChampPath.appending(path: entry.path)
-            if FileManager.default.fileExists(atPath: extractedFilePath.path(percentEncoded: false)) {
-                try? FileManager.default.removeItem(at: extractedFilePath)
-            }
-            do {
-                _ = try bepinexZip?.extract(entry, to: extractedFilePath)
-            } catch {
+        let request = URLRequest(url: URL(string: "https://github.com/BepInEx/BepInEx/releases/download/v5.4.21/BepInEx_unix_5.4.21.0.zip")!)
+        let task = URLSession.shared.downloadTask(with: request) {url, responce, err in
+            if err != nil {
                 progressText = "Error..."
-                contentView.showAlert("Failed to extract \(extractedFilePath.path(percentEncoded: false)) from BepInEx.zip. Try deleting the file and installing again.")
+                contentView.showAlert("Failed to download the BepInEx release. Do you have access to Github?")
                 return
             }
             
-        })
-        
-        progressText = "Finishing up..."
-        try? FileManager.default.removeItem(at: bepinexURL)
-        if let scriptUrl = Bundle.main.url(forResource: "run_bepinex", withExtension: "sh") {
-            try? FileManager.default.removeItem(at: trmbChampPath.appending(path: "run_bepinex.sh"))
-            try? FileManager.default.copyItem(at: scriptUrl, to: trmbChampPath.appending(path: "run_bepinex.sh"))
-        }
-        do {
-            var perms = try FileManager.default.attributesOfItem(atPath: trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))
+            let bepinexURL = trmbChampPath.appending(path: "BepInEx.zip")
+            do {
+                if FileManager.default.fileExists(atPath: bepinexURL.path(percentEncoded: false)) {
+                    try FileManager.default.removeItem(at: bepinexURL)
+                }
+            } catch {
+                progressText = "Error..."
+                contentView.showAlert("Failed to delete \(bepinexURL.path(percentEncoded: false))")
+                return
+            }
             
-            perms[.posixPermissions] = 493
+            do {
+                try FileManager.default.moveItem(at: url!, to: bepinexURL)
+            } catch {
+                progressText = "Error..."
+                contentView.showAlert("Failed to write to \(bepinexURL.path(percentEncoded: false)).")
+                return
+            }
             
-            try FileManager.default.setAttributes(perms, ofItemAtPath: trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))
-        } catch {
-            progressText = "Error..."
-            contentView.showAlert("Failed to set execute permissions for the file run_bepinex.sh")
-            return
+            progressText = "Extracting BepInEx..."
+            
+            
+            let bepinexZip = Archive(url: bepinexURL, accessMode: .read)
+            
+            bepinexZip?.forEach({ entry in
+                let extractedFilePath = trmbChampPath.appending(path: entry.path)
+                if FileManager.default.fileExists(atPath: extractedFilePath.path(percentEncoded: false)) {
+                    try? FileManager.default.removeItem(at: extractedFilePath)
+                }
+                do {
+                    _ = try bepinexZip?.extract(entry, to: extractedFilePath)
+                } catch {
+                    progressText = "Error..."
+                    contentView.showAlert("Failed to extract \(extractedFilePath.path(percentEncoded: false)) from BepInEx.zip. Try deleting the file and installing again.")
+                    return
+                }
+                
+            })
+            
+            progressText = "Finishing up..."
+            try? FileManager.default.removeItem(at: bepinexURL)
+            if let scriptUrl = Bundle.main.url(forResource: "run_bepinex", withExtension: "sh") {
+                try? FileManager.default.removeItem(at: trmbChampPath.appending(path: "run_bepinex.sh"))
+                try? FileManager.default.copyItem(at: scriptUrl, to: trmbChampPath.appending(path: "run_bepinex.sh"))
+            }
+            do {
+                var perms = try FileManager.default.attributesOfItem(atPath: trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))
+                
+                perms[.posixPermissions] = 493
+                
+                try FileManager.default.setAttributes(perms, ofItemAtPath: trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))
+            } catch {
+                progressText = "Error..."
+                contentView.showAlert("Failed to set execute permissions for the file run_bepinex.sh")
+                return
+            }
+            
+            launchOptionsText = "\"\(trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))\" %command%"
+            installComplete = true
+            didInstall = true
+            
+            progressText = "Done!"
+            
         }
+        task.resume()
         
-        launchOptionsText = "\"\(trmbChampPath.appending(path: "run_bepinex.sh").path(percentEncoded: false))\" %command%"
-        installComplete = true
-        didInstall = true
-        
-        progressText = "Done!"
     }
 }
 

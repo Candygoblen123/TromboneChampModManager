@@ -14,8 +14,8 @@
 		362A6AAF298C5AB300D2B6D5 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362A6AAE298C5AB300D2B6D5 /* Types.swift */; };
 		362A6AB2298C625600D2B6D5 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 362A6AB1298C625600D2B6D5 /* ZIPFoundation */; };
 		363B43E929E87D9E004D4070 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363B43E829E87D9E004D4070 /* Util.swift */; };
+		363B43EC29E88C04004D4070 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 363B43EB29E88C04004D4070 /* Kingfisher */; };
 		365928EB299F114C0047EF9F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365928EA299F114C0047EF9F /* SettingsView.swift */; };
-		36616AF2298DECEF00E92886 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 36616AF1298DECEF00E92886 /* CachedAsyncImage */; };
 		36616AF4298DEFD500E92886 /* ModListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36616AF3298DEFD500E92886 /* ModListRow.swift */; };
 		36616AF6298DF1EE00E92886 /* ModInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36616AF5298DF1EE00E92886 /* ModInfo.swift */; };
 		36793328298C8EED0027CAF1 /* BepInExInstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36793327298C8EED0027CAF1 /* BepInExInstallView.swift */; };
@@ -45,8 +45,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				363B43EC29E88C04004D4070 /* Kingfisher in Frameworks */,
 				362A6AB2298C625600D2B6D5 /* ZIPFoundation in Frameworks */,
-				36616AF2298DECEF00E92886 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,10 +81,10 @@
 				36793329298C94F80027CAF1 /* ModList.swift */,
 				36616AF3298DEFD500E92886 /* ModListRow.swift */,
 				365928EA299F114C0047EF9F /* SettingsView.swift */,
+				363B43E829E87D9E004D4070 /* Util.swift */,
 				362A6AA3298C4B8300D2B6D5 /* Assets.xcassets */,
 				362A6AA8298C4B8300D2B6D5 /* Trombone_Champ_Mod_Manager.entitlements */,
 				362A6AA5298C4B8300D2B6D5 /* Preview Content */,
-				363B43E829E87D9E004D4070 /* Util.swift */,
 			);
 			path = "Trombone Champ Mod Manager";
 			sourceTree = "<group>";
@@ -115,7 +115,7 @@
 			name = "Trombone Champ Mod Manager";
 			packageProductDependencies = (
 				362A6AB1298C625600D2B6D5 /* ZIPFoundation */,
-				36616AF1298DECEF00E92886 /* CachedAsyncImage */,
+				363B43EB29E88C04004D4070 /* Kingfisher */,
 			);
 			productName = "Trombone Champ Mod Manager";
 			productReference = 362A6A9C298C4B8200D2B6D5 /* Trombone Champ Mod Manager.app */;
@@ -148,7 +148,7 @@
 			mainGroup = 362A6A93298C4B8200D2B6D5;
 			packageReferences = (
 				362A6AB0298C625600D2B6D5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
-				36616AF0298DECEF00E92886 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+				363B43EA29E88C04004D4070 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 362A6A9D298C4B8200D2B6D5 /* Products */;
 			projectDirPath = "";
@@ -314,7 +314,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Trombone Champ Mod Manager/Preview Content\"";
 				DEVELOPMENT_TEAM = RJNC97Y8QD;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -327,7 +327,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.candy.Trombone-Champ-Mod-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -346,7 +346,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Trombone Champ Mod Manager/Preview Content\"";
 				DEVELOPMENT_TEAM = RJNC97Y8QD;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -359,7 +359,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.candy.Trombone-Champ-Mod-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -400,12 +400,12 @@
 				minimumVersion = 0.9.9;
 			};
 		};
-		36616AF0298DECEF00E92886 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+		363B43EA29E88C04004D4070 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 7.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -416,10 +416,10 @@
 			package = 362A6AB0298C625600D2B6D5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
 		};
-		36616AF1298DECEF00E92886 /* CachedAsyncImage */ = {
+		363B43EB29E88C04004D4070 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 36616AF0298DECEF00E92886 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
+			package = 363B43EA29E88C04004D4070 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

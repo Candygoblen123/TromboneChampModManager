@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "swiftui-cached-async-image",
+      "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
       "state" : {
-        "revision" : "467a3d17479887943ab917a379e62bbaff60ac8a",
-        "version" : "2.1.1"
+        "revision" : "af4be924ad984cf4d16f4ae4df424e79a443d435",
+        "version" : "7.6.2"
       }
     },
     {

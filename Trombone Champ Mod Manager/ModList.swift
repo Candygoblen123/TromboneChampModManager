@@ -7,7 +7,6 @@
 
 import SwiftUI
 import ZIPFoundation
-import CachedAsyncImage
 
 struct ModList: View {
     @State var communityPackageList: [PackagePreview]?
