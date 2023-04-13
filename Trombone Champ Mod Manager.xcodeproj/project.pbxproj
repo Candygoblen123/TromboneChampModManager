@@ -13,6 +13,7 @@
 		362A6AA7298C4B8300D2B6D5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 362A6AA6298C4B8300D2B6D5 /* Preview Assets.xcassets */; };
 		362A6AAF298C5AB300D2B6D5 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362A6AAE298C5AB300D2B6D5 /* Types.swift */; };
 		362A6AB2298C625600D2B6D5 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 362A6AB1298C625600D2B6D5 /* ZIPFoundation */; };
+		363B43E929E87D9E004D4070 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363B43E829E87D9E004D4070 /* Util.swift */; };
 		365928EB299F114C0047EF9F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365928EA299F114C0047EF9F /* SettingsView.swift */; };
 		36616AF2298DECEF00E92886 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 36616AF1298DECEF00E92886 /* CachedAsyncImage */; };
 		36616AF4298DEFD500E92886 /* ModListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36616AF3298DEFD500E92886 /* ModListRow.swift */; };
@@ -30,6 +31,7 @@
 		362A6AA6298C4B8300D2B6D5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		362A6AA8298C4B8300D2B6D5 /* Trombone_Champ_Mod_Manager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Trombone_Champ_Mod_Manager.entitlements; sourceTree = "<group>"; };
 		362A6AAE298C5AB300D2B6D5 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		363B43E829E87D9E004D4070 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		365928EA299F114C0047EF9F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		36616AF3298DEFD500E92886 /* ModListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModListRow.swift; sourceTree = "<group>"; };
 		36616AF5298DF1EE00E92886 /* ModInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModInfo.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				362A6AA3298C4B8300D2B6D5 /* Assets.xcassets */,
 				362A6AA8298C4B8300D2B6D5 /* Trombone_Champ_Mod_Manager.entitlements */,
 				362A6AA5298C4B8300D2B6D5 /* Preview Content */,
+				363B43E829E87D9E004D4070 /* Util.swift */,
 			);
 			path = "Trombone Champ Mod Manager";
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36793328298C8EED0027CAF1 /* BepInExInstallView.swift in Sources */,
+				363B43E929E87D9E004D4070 /* Util.swift in Sources */,
 				365928EB299F114C0047EF9F /* SettingsView.swift in Sources */,
 				3679332A298C94F80027CAF1 /* ModList.swift in Sources */,
 				36616AF6298DF1EE00E92886 /* ModInfo.swift in Sources */,
@@ -310,7 +314,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Trombone Champ Mod Manager/Preview Content\"";
 				DEVELOPMENT_TEAM = RJNC97Y8QD;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -323,8 +327,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.candy.Trombone-Champ-Mod-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -342,7 +346,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Trombone Champ Mod Manager/Trombone_Champ_Mod_Manager.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"Trombone Champ Mod Manager/Preview Content\"";
 				DEVELOPMENT_TEAM = RJNC97Y8QD;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -355,8 +359,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.candy.Trombone-Champ-Mod-Manager";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

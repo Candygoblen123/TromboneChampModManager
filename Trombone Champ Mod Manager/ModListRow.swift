@@ -24,14 +24,15 @@ struct ModListRow: View {
                 .frame(width: 50, height: 50)
             Text(package.package_name)
             Spacer()
-            if installingPackages.contains([package.id]) {
+            
+            if installingPackages.contains(where: {$0 == package.id}) {
                 ProgressView(value: progress).progressViewStyle(.circular).padding(.trailing)
                 Button("Working...") {
                     Task {
                         await installPackage(package)
                     }
                 }.disabled(true)
-            } else if installedPackages.contains([package.id]) {
+            } else if installedPackages.contains(where: {$0 == package.id}) {
                 if needsUpdate {
                     Text("Update Available!")
                     Button("Update") {
@@ -100,7 +101,7 @@ struct ModListRow: View {
     func installDependencies(_ dependencies: [Dependency]) async {
         for dependency in dependencies {
             if dependency.package_name == "BepInExPack_TromboneChamp" { continue } // We already installed it!
-            if installedPackages.contains(["\(dependency.namespace)-\(dependency.package_name)"]) { continue }
+            if installedPackages.contains(where: {$0 == "\(dependency.namespace)-\(dependency.package_name)"}) { continue }
             do {
                 let fullDepData = try await fetchFullData(namespace: dependency.namespace, package_name: dependency.package_name, community_identifier: dependency.community_identifier)
                 await installPackage(fullDepData)
@@ -257,7 +258,7 @@ struct ModListRow: View {
         try? FileManager.default.removeItem(at: urlOrNil)
         installingPackages.removeLast()
         
-        if !installedPackages.contains([package.id]) {
+        if !installedPackages.contains(where: { $0 == package.id }) {
             installedPackages.append(package.id)
         }
     }
