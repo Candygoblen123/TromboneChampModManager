@@ -73,14 +73,20 @@ struct ModList: View {
     }
     
     func fetchPackages() async throws {
-        let communityUrl = URL(string: "https://thunderstore.io/api/experimental/frontend/c/trombone-champ/packages/")!
-        let (data, _) = try await URLSession.shared.data(from: communityUrl)
-        
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        let communityPackages = try decoder.decode(ThunderstorePackages.self, from: data)
-        
-        communityPackageList = communityPackages.packages.filter({ $0.package_name != "BepInExPack_TromboneChamp" && $0.package_name != "r2modman" })
+        var morePages = true
+        var page = 0
+        communityPackageList = []
+        while morePages {
+            page += 1
+            let communityUrl = URL(string: "https://thunderstore.io/api/experimental/frontend/c/trombone-champ/packages/?page=\(page)")!
+            let (data, _) = try await URLSession.shared.data(from: communityUrl)
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let communityPackages = try decoder.decode(ThunderstorePackages.self, from: data)
+            
+            communityPackageList! += communityPackages.packages.filter({ $0.package_name != "BepInExPack_TromboneChamp" && $0.package_name != "r2modman" })
+        }
     }
     
     func getInstalledPackages() -> [String] {
