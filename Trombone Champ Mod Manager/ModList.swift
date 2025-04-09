@@ -84,8 +84,12 @@ struct ModList: View {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             let communityPackages = try decoder.decode(ThunderstorePackages.self, from: data)
-            
-            communityPackageList! += communityPackages.packages.filter({ $0.package_name != "BepInExPack_TromboneChamp" && $0.package_name != "r2modman" })
+            let filteredPackages = ["BepInExPack_TromboneChamp", "r2modman", "GaleModManager"]
+            communityPackageList! += communityPackages.packages.filter({
+                !filteredPackages.contains($0.package_name) })
+            if communityPackages.has_more_pages == false {
+                morePages = false
+            }
         }
     }
     
